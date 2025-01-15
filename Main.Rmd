@@ -48,7 +48,7 @@ print(SOC.MCA)
 
 
 ```{r individuals}
-which.max(abs(SOC.MCA$coord))))))
+# which.max(abs(SOC.MCA$coord))))))
 map.ind(SOC.MCA,)
 ```
 
@@ -79,16 +79,104 @@ map.ind(SOC.MCA.sub)
 ```
 ## Which categories are driving the axes?
 ```{r}
+contribution(SOC.MCA.sub
+             , dim = 1
+             , all = FALSE
+             , indices = FALSE
+             , mode = "sort")
+```
+
+```{r}
+(contribution1 <- map.ctr(SOC.MCA.sub
+                         , dim = c(1,2)
+                         , ctr.dim = 1
+                         , point.shape = "variable"
+                         , point.alpha = 0.8
+                         , point.fill = "whitesmoke"
+                         , point.color = "black"
+                         , point.size = 0.2
+                         , label = TRUE
+                         , label.size = 1.8
+                         , label.fill = NULL
+                         , map.title = "1.dimension modalities"
+                         , labelx = "default"
+                         , labely = "default"
+                         , legend = NULL) +
+  ylim(-3,4) +
+  xlim(-3,4) +
+  theme(axix.text.x = element_text(size = 8, angle = 0),
+         axix.text.y = element_text(size = 8, angle = 0),
+         plot.title = element_text(size = 10, face = "bold")
+         )
+)
+```
+
+```{r}
+(contribution2 <- map.ctr(SOC.MCA.sub
+                         , dim = c(1,2)
+                         , ctr.dim = 2
+                         , point.shape = "variable"
+                         , point.alpha = 0.8
+                         , point.fill = "whitesmoke"
+                         , point.color = "black"
+                         , point.size = 0.2
+                         , label = TRUE
+                         , label.size = 1.8
+                         , label.fill = NULL
+                         , map.title = "2.dimension modalities"
+                         , labelx = "default"
+                         , labely = "default"
+                         , legend = NULL) +
+  ylim(-3,4) +
+  xlim(-3,4) +
+  theme(axix.text.x = element_text(size = 8, angle = 0),
+         axix.text.y = element_text(size = 8, angle = 0),
+         plot.title = element_text(size = 10, face = "bold")
+         )
+)
+```
+## Setting categories passive
+```{r}
+active <- data.frame(data.sub[,2:19]) 
+sup <- data.frame(data.sub$soctrust)
+
+options(passive = c("kindblue: Not heard of"
+                    , "symph5: Not heard of" )
+        ) 
+## Dont forget to turn off
+
+SOC.MCA.sub.passive <- soc.mca(active, sup)
+
+SOC.MCA.sub.passive$names.passive
+
+# options(passive = NULL)
+```
+
+# Supplementary categories
+
+```{r}
+#ind.explorer(SOC.MCA.sub.passive, active, sup)
+
+(sup.p <- map.sup(SOC.MCA.sub.passive,
+                 dim = c(1,2),
+                 label.size = 2) +
+                   
+  ylim(-3,4) +
+  xlim(-3,4) +
+    
+  theme(axix.text.x = element_text(size = 8, angle = 0),
+         axix.text.y = element_text(size = 8, angle = 0),
+         plot.title = element_text(size = 10, face = "bold"))
+ 
+)
 
 ```
 
+# Export results
+```{r}
+export(SOC.MCA.sub.passive, file = here("Output", "MCA_results.csv"))
 
-
-
-
-
-
-
+```
 
 
 
