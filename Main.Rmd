@@ -1,0 +1,116 @@
+---
+title: "MCA_main"
+output: html_document
+date: "2025-01-15"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r install, include=FALSE}
+
+install.packages("soc.ca") 
+install.packages("here") 
+install.packages("haven") 
+install.packages("sjlabelled")
+```
+
+```{r load, include=FALSE}
+
+require(soc.ca)
+require(here)
+require(haven)
+require(dplyr)
+require(sjlabelled)
+```
+
+```{r data, include=FALSE}
+data <- read_sav(here("Data", "Coursefile_Oslo_30var 1.sav"))
+
+data <-  data %>% 
+  dplyr::mutate(across(where(is.labelled), to_factor))
+
+```
+
+```{r construction_MCA}
+data$ID <- 1:nrow(data)
+active <- data.frame(data[,2:19])
+id <- data.frame(data$ID)
+sup <- data.frame(data$soctrust)
+```
+
+```{r}
+SOC.MCA <- soc.mca(active, sup)
+
+print(SOC.MCA)
+```
+
+
+```{r individuals}
+which.max(abs(SOC.MCA$coord))))))
+map.ind(SOC.MCA,)
+```
+
+
+```{r}
+data.sub <- subset(data, ID!= 1228)
+
+active <- data.frame(data.sub[,2:19])
+sup <- data.frame(data.sub$soctrust)
+
+SOC.MCA.sub <- soc.mca(active, sup)
+```
+
+```{r}
+map.ind(SOC.MCA.sub)
+```
+
+
+```{r}
+(output.ind <- map.ind(SOC.MCA.sub
+                      , point.alpha = 0.3
+                      , point.fill = "whitesmoke"
+                      , point.color = "black"
+                      , point.size = 0.5) +
+  ylim(-2,2) +
+  xlim(-2,2)
+ )
+```
+## Which categories are driving the axes?
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+```{r}
+
+```
